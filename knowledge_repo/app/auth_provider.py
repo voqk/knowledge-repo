@@ -56,7 +56,7 @@ class KnowledgeAuthProvider(object, metaclass=SubclassRegisteringABCMeta):
 
     def _perform_login(self, user):
         user = prepare_user(user)
-        login_user(user)
+        login_user(user, remember=True)
 
         # Notify flask principal that the identity has changed
         identity_changed.send(current_app._get_current_object(),

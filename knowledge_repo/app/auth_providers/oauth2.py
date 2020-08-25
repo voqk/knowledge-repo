@@ -31,7 +31,7 @@ PRESETS = {
         'scopes': None,
         'user_info_endpoint': 'user',
         'user_info_mapping': {
-            'identifier': ['email', 'login'],
+            'identifier': ['login'],
             'name': 'name',
             'avatar_uri': 'avatar_url'
         }
@@ -150,7 +150,7 @@ class OAuth2Provider(KnowledgeAuthProvider):
         return self.extract_user_from_api()
 
     def extract_user_from_api(self):
-
+         
         def extract_from_dict(d, key):
             if isinstance(key, tuple):
                 if len(key) == 1:
@@ -166,7 +166,17 @@ class OAuth2Provider(KnowledgeAuthProvider):
             if isinstance(key, str):
                 return d[key]
             raise RuntimeError("Invalid key type: {}.".format(key))
-
+        """
+        def extract_from_dict(d, key):
+            if isinstance(key, (list, tuple)):
+                if len(key) == 1:
+                    key = key[0]
+                else:
+                    return extract_from_dict(d[key[0]], key[1:])
+            if isinstance(key, str):
+                return d[key]
+            raise RuntimeError("Invalid key type: {}.".format(key))
+        """        
         response = self.oauth_client.get(self.get_endpoint_url(self.user_info_endpoint), verify=self.verify_ssl_certs)
         try:
             response_dict = json.loads(response.content)
